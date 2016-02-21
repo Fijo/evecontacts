@@ -6,7 +6,7 @@ var request = require("request"),
 	uuid = require('node-uuid'),
 	_ = require('underscore'),
 	Promise = require('promise'),
-	base64 = require('base64');
+	base64 = require('base64encodedecode');
 
 
 var getUtcTime = function()	{
@@ -145,6 +145,9 @@ var eveapi = (function(request, crest, fs, _, base64)	{
 	};
 
 	return {
+		getClientId: function()	{
+			return config.clientId;
+		},
 		getToken: function(code, callback, errorCallback)	{
 			request.post({
 			    url: 'https://login.eveonline.com/oauth/token',
@@ -345,7 +348,7 @@ app.get('/stats', function(req, res)	{
 })
 
 app.get('/clientId', function(req, res)	{
-	res.send(config.clientId);
+	res.send(eveapi.getClientId());
 })
 
 app.post('/ex/del', function (req, res) {
