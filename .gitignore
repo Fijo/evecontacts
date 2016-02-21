@@ -1,0 +1,6 @@
+/*.apiKey
+
+/.pnode
+/node_modules/**
+/site/bower_components/**
+Thumbs.db

@@ -1,0 +1,30 @@
+{
+  "name": "evecontacts",
+  "version": "0.0.0",
+  "description": "",
+  "main": "main.js",
+  "dependencies": {
+    "body-parser": "~1.15.0",
+    "cookie-parser": "~1.4.1",
+    "express": "~4.13.4",
+    "bower": "~1.7.7",
+    "node-uuid": "~1.4.7",
+    "promise": "~7.1.1",
+    "request": "~2.69.0",
+    "underscore": "~1.8.3",
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Fijo/evecontacts.git"
+  },
+  "author": "Jonas Fischer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Fijo/evecontacts/issues"
+  },
+  "homepage": "https://github.com/Fijo/evecontacts"
+}

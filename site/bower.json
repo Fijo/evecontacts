@@ -1,0 +1,22 @@
+{
+  "name": "EVE Contacts",
+  "version": "0.0.0",
+  "authors": [
+    "Jonas Fischer <fijo.com@googlemail.com>"
+  ],
+  "moduleType": [
+    "node"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "angular": "~1.4.4",
+    "angular-animate": "~1.4.6",
+    "angular-bootstrap": "~1.1.2",
+    "angular-touch": "~1.4.6",
+    "angular-underscore-module": "~1.0.1",
+    "bootstrap": "~3.3.5",
+    "jquery": "~2.1.4",
+    "underscore": "~1.8.3"
+  },
+  "private": true
+}
