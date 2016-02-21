@@ -5,7 +5,8 @@ var request = require("request"),
 	bodyParser = require('body-parser'),
 	uuid = require('node-uuid'),
 	_ = require('underscore'),
-	Promise = require('promise');
+	Promise = require('promise'),
+	base64 = require('base64');
 
 
 var getUtcTime = function()	{
@@ -118,11 +119,15 @@ var crest = (function(request, _, getUtcTime)	{
 	return self;
 })(request, _, getUtcTime);
 
-var eveapi = (function(request, crest, fs, _)	{
+var eveapi = (function(request, crest, fs, _, base64)	{
 	var config = {}; 
 	fs.readFile('.apiKey', 'utf8', function(err, data)	{
 		if(err) throw err;
 		config.apiKey = data;
+	});
+	fs.readFile('.clientId', 'utf8', function(err, data)	{
+		if(err) throw err;
+		config.clientId = data;
 	});
 
 	var getContactData = function(contact)	{
@@ -150,7 +155,7 @@ var eveapi = (function(request, crest, fs, _)	{
 			    },
 			    headers: {
 			    	'Content-Type': 'application/x-www-form-urlencoded',
-			    	Authorization: 'Basic ' + config.apiKey,
+			    	Authorization: 'Basic ' + base64.base64Encode(config.clientId + ':' + config.apiKey),
 			    	Host: 'login.eveonline.com'
 			    }
 			}, function (error, response, data) {
@@ -196,7 +201,7 @@ var eveapi = (function(request, crest, fs, _)	{
 			});
 		}
 	};
-})(request, crest, fs, _);
+})(request, crest, fs, _, base64);
 
 
 
@@ -323,13 +328,6 @@ var userManager = (function(uuid)	{
 		}
 	};
 })(uuid, nodePersistor);
-
-
-var config = {}; 
-fs.readFile('.clientId', 'utf8', function(err, data)	{
-	if(err) throw err;
-	config.clientId = data;
-});
 
 
 var logErrorCallback = function(data)	{
