@@ -13,14 +13,15 @@ cd site/
 cd ..
 
 
-Use your favorite text editor to create a text file named .apiKey in the repository root.
 
-goto https://developers.eveonline.com/applications and create a new application
+Goto https://developers.eveonline.com/applications and create a new application.
 
-chose CREST Access for connection type and in the permissions section add CharacterContactsRead and CharacterContactsWrite to the "Requested Scopes List".
+Chose CREST Access for connection type and in the permissions section add CharacterContactsRead and CharacterContactsWrite to the "Requested Scopes List".
 Set the callback url up to be http://{your hostname}:3000/
 
-Once you created your application put the "Secret Key" into the .apiKey file.
+Use your favorite text editor to create 2 text files named .apiKey and .clientId in the repository root.
+Once you created your application put the "Secret Key" into the .apiKey file and the "Client ID" into the .clientId file.
 
 To start the server execute
 node main.js
+

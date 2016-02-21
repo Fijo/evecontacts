@@ -112,7 +112,8 @@ var crest = (function(request, _, getUtcTime)	{
 					}
 				}, detectErrors(callback, errorCallback));
 			});
-		}
+		},
+		stats: getStats
 	};
 	return self;
 })(request, _, getUtcTime);
@@ -324,6 +325,13 @@ var userManager = (function(uuid)	{
 })(uuid, nodePersistor);
 
 
+var config = {}; 
+fs.readFile('.clientId', 'utf8', function(err, data)	{
+	if(err) throw err;
+	config.clientId = data;
+});
+
+
 var logErrorCallback = function(data)	{
 	return function(error)	{
 		data.public.errors.push({
@@ -333,6 +341,14 @@ var logErrorCallback = function(data)	{
 		});
 	};
 };
+
+app.get('/stats', function(req, res)	{
+	res.send(JSON.stringify(crest.stats()));
+})
+
+app.get('/clientId', function(req, res)	{
+	res.send(config.clientId);
+})
 
 app.post('/ex/del', function (req, res) {
 	var data = userManager.getInfo(req, res);

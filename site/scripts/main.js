@@ -3,8 +3,13 @@ var app = angular.module('main', ['ui.bootstrap', 'underscore'])
     $locationProvider.html5Mode(true);    
 }])
 .controller('MainController', function($scope, $location, $http, _) {
-
-
+  var clientId = '';
+  $http({
+      method: 'GET',
+      url: '/clientId'
+    }).then(function(data)  {
+      clientId = data.data;
+    });
 
   var params = $location.search();
   if(params.code != null)  {
@@ -47,9 +52,10 @@ var app = angular.module('main', ['ui.bootstrap', 'underscore'])
   };
 
   $scope.getLoginUrl = function(character) {
+    if(clientId == '') return;
     return 'https://login.eveonline.com/oauth/authorize/?response_type=code&redirect_uri='
-      + encodeURIComponent('http://localhost:3000/?characterType='+character.type)
-      + '&client_id=a8c5873e20794a888094ebac3d157b71&scope=characterContactsRead%20characterContactsWrite';
+      + encodeURIComponent('http://' + $location.host() + ':3000/?characterType='+character.type)
+      + '&client_id=' + clientId + '&scope=characterContactsRead%20characterContactsWrite';
   };
 
   $scope.getStandingImage = function(standing)  {
