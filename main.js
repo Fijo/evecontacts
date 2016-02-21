@@ -123,11 +123,11 @@ var eveapi = (function(request, crest, fs, _, base64)	{
 	var config = {}; 
 	fs.readFile('.apiKey', 'utf8', function(err, data)	{
 		if(err) throw err;
-		config.apiKey = data;
+		config.apiKey = data.trim();
 	});
 	fs.readFile('.clientId', 'utf8', function(err, data)	{
 		if(err) throw err;
-		config.clientId = data;
+		config.clientId = data.trim();
 	});
 
 	var getContactData = function(contact)	{
