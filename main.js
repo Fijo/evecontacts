@@ -132,7 +132,7 @@ var eveapi = (function(request, crest, fs, _, base64)	{
 
 	var getContactData = function(contact)	{
 		return {
-			standing: contact.standing,
+			standing: parseInt(contact.standing),
 			contactType: contact.contactType,
 			watched: contact.watched,
 			contact: {
