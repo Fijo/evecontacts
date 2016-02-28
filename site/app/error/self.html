@@ -1,0 +1,11 @@
+<div ng-repeat="error in errors" class="alert alert-danger" role="alert">
+  <a href="javascript:void(0)" ng-click="delEx(error.id)" class="close" data-dismiss="alert">&times;</a>
+  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+  <span class="sr-only">Error:</span>
+  <code>
+    {{error.data | json}}
+  </code>
+  <span class="pull-right">
+    {{error.time | date: 'H:mm'}}
+  </span>
+</div>

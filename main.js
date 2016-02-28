@@ -71,7 +71,8 @@ var crest = (function(request, _, getUtcTime)	{
 			request.get({
 				url: url,
 				json: true,
-				headers: {
+				headers: token == null ? null : {
+					Accept: 'application/vnd.ccp.eve.Api-v3+json',
 					Authorization: 'Bearer ' + token,
 				}
 			}, detectErrors(callback, errorCallback));
@@ -96,6 +97,7 @@ var crest = (function(request, _, getUtcTime)	{
 					json: false,
 					body:  JSON.stringify(data),
 					headers: {
+						Accept: 'application/vnd.ccp.eve.Api-v3+json',
 					    'content-type': 'application/json',
 						Authorization: 'Bearer ' + token
 					}
@@ -108,6 +110,7 @@ var crest = (function(request, _, getUtcTime)	{
 					url: url,
 					json: false,
 					headers: {
+						Accept: 'application/vnd.ccp.eve.Api-v3+json',
 					    'content-type': 'application/json',
 						Authorization: 'Bearer ' + token
 					}
@@ -143,6 +146,11 @@ var eveapi = (function(request, crest, fs, _, base64)	{
 			}
 		};
 	};
+	var baseUrl = {
+		auth: 'https://login.eveonline.com/',
+		crest: 'https://crest-tq.eveonline.com/',
+		publicCrest: 'https://public-crest.eveonline.com/'
+	};
 
 	return {
 		getClientId: function()	{
@@ -150,7 +158,7 @@ var eveapi = (function(request, crest, fs, _, base64)	{
 		},
 		getToken: function(code, callback, errorCallback)	{
 			request.post({
-			    url: 'https://login.eveonline.com/oauth/token',
+			    url: baseUrl.auth + 'oauth/token',
 			    json: true,
 			    form: {
 			    	grant_type: 'authorization_code',
@@ -162,12 +170,13 @@ var eveapi = (function(request, crest, fs, _, base64)	{
 			    	Host: 'login.eveonline.com'
 			    }
 			}, function (error, response, data) {
+				console.log(data);
 				if(data.error_description == 'Authorization code not found') errorCallback(data);
 				else callback(data.access_token);
 			}, errorCallback);
 		},
 		getCharacter: function(token, callback, errorCallback)	{
-			crest.get(token, 'https://crest-tq.eveonline.com/decode/', function(error, response, data)	{
+			crest.get(token, baseUrl.crest + 'decode/', function(error, response, data)	{
 				if(!data)	{
 					errorCallback();
 					return;
@@ -178,7 +187,7 @@ var eveapi = (function(request, crest, fs, _, base64)	{
 			}, errorCallback);
 		},
 		getContacts: function(token, characterId, callback, errorCallback)	{
-			crest.get(token, 'https://crest-tq.eveonline.com/characters/' + characterId + '/contacts/', function(error, response, data)	{
+			crest.get(token, baseUrl.crest + 'characters/' + characterId + '/contacts/', function(error, response, data)	{
 				callback(data);
 			}, errorCallback);
 		},
@@ -188,7 +197,7 @@ var eveapi = (function(request, crest, fs, _, base64)	{
 				if(++i == count) callback(error, response, data);
 			};
 			_.each(contacts, function(contact)	{
-				var url = 'https://crest-tq.eveonline.com/characters/' + characterId + '/contacts/';
+				var url = baseUrl.crest + 'characters/' + characterId + '/contacts/';
 				crest.del(token, url + contact.contact.id + '/', function(error, response, data)	{
 					crest.post(token, url, getContactData(contact), innerCallback, errorCallback);
 				}, errorCallback);
@@ -200,8 +209,19 @@ var eveapi = (function(request, crest, fs, _, base64)	{
 				if(++i == count) callback(error, response, data);
 			};
 			_.each(contacts, function(contact)	{
-				crest.del(token, 'https://crest-tq.eveonline.com/characters/' + characterId + '/contacts/' + contact.contact.id + '/', innerCallback, errorCallback);
+				crest.del(token, baseUrl.crest + 'characters/' + characterId + '/contacts/' + contact.contact.id + '/', innerCallback, errorCallback);
 			});
+		},
+		getStatus: function(token, callback, errorCallback)	{
+			crest.get(token, baseUrl.publicCrest, function(error, response, data)	{
+				if(!data)	{
+					errorCallback();
+					return;
+				}
+				crest.get(token, data.character.href, function(error, response, data)	{
+					callback(data);
+				}, errorCallback);
+			}, errorCallback);
 		}
 	};
 })(request, crest, fs, _, base64);

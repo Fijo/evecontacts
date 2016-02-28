@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>EVE Online Contact Manager</title>
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style/main.css">
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/angular/angular.min.js"></script>
     <script src="bower_components/angular-animate/angular-animate.min.js"></script>
@@ -15,166 +16,124 @@
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
     <script src="bower_components/underscore/underscore-min.js"></script>
     <script src="bower_components/angular-underscore-module/angular-underscore-module.js"></script>
-    <style>
-    .contact {
-      position: relative;
-      min-width: 34px;
-      height: 34px;
-      padding-left: 37px;
-      padding-right: 5px;
-      margin: 1px;
-      -webkit-user-select: none;
-      -khtml-user-select: none;
-      -moz-user-select: none;
-      -o-user-select: none;
-      user-select: none;
-    }
-    .contact:hover  {
-      background: rgba(100, 100, 100, .4);
-      cursor: pointer;
-    }
-    .contact.selected  {
-      background: rgba(180, 180, 180, .5);
-      cursor: pointer;
-    }
-    .contact .contact-img {
-      position: absolute;
-      top: 1px;
-      left: 1px;
-    }
-    .contact .contact-flag {
-      position: absolute;
-      top: 3px;
-      right: 2px;
-    }
-    .contact .contact-standing {
-      position: absolute;
-      top: 22px;
-      right: 3px;
-    }
-    .contact .contact-name,
-    .character .character-summary .character-name  {
-      display: block;
-      font-size: 16px;
-      line-height: 32px;
-      font-family: Arial;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      white-space:nowrap;
-    }
-
-    .character  {
-      position: relative;
-      height: 128px;
-      padding-left: 133px;
-      padding-right: 5px;
-    }
-    .character .character-img {
-      position: absolute;
-      top: 0px;
-      left: 0px;
-    }
-    .character .character-standing {
-      position: absolute;
-      bottom: 4px;
-      left: 4px;
-      width: 18px;
-      height: 18px;
-    }
-    .big-standing {
-      width: 13px;
-      height: 12px;
-      padding: 0;
-    }
-    </style>
   </head>
   <body ng-controller="MainController">
     <form>
       <div class="container">
-        <div class="jumbotron">
-          <h1>EVE Online Contact Manager</h1>
-          <p>Welcome! Much description... Very Fancy...<br>
-            <br>
-            Warning: Contact labels and blocked contacts (read only) aren´t supported yet so be careful in case you use them to not change the coresponding contacts that have label asigned to them.<br>
-            <br>
-            Feel free to contact Julian Aldurald about anything related to this tool.
-          </p>
+        <div ng-include="'app/welcome/self.html'"></div>
+        <div ng-include="'app/error/self.html'" ng-controller="ErrorController"></div>
+        
 
-          <!--<p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>-->
-        </div>
-
-        <div ng-repeat="error in errors" class="alert alert-danger" role="alert">
-          <a href="javascript:void(0)" ng-click="delEx(error.id)" class="close" data-dismiss="alert">&times;</a>
-          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-          <span class="sr-only">Error:</span>
-          <code>
-            {{error.data | json}}
-          </code>
-          <span class="pull-right">
-            {{error.time | date: 'H:mm'}}
-          </span>
-        </div>
 
 
         <div class="row">
           <div class="col-xs-8 col-sm-4" ng-repeat="character in characters">
-            <h3>{{::character.type}} character
-              <span class="pull-right" ng-if="character.character != null">
-                <a ng-click="loggout(character)" href="javascript:void(0);">
-                  <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                </a>
-              </span>
-            </h3>
+            <h3>{{::character.type}} character</h3>
 
 
-            <div ng-if="character.character != null">
-              <b>{{character.character.name}}</b><br/>
-              <img ng-src="{{character.character.portrait['128x128'].href}}" alt="{{character.character.name}}">
+            <div ng-if="character.character != null">              
+              <div class="media">
+                <div class="media-left">
+                  <img class="media-object" ng-src="{{character.character.portrait['128x128'].href}}" alt="{{character.character.name}}">
+                </div>
+                <div class="media-body">
+                  <h4 class="media-heading">
+                    {{character.character.name}} 
+                    <span class="pull-right">
+                      <a ng-click="loggout(character)" href="javascript:void(0);">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                      </a>
+                    </span>
+                  </h4>
+                  <div class="media">
+                    <div class="media-left">
+                      <img class="media-object" ng-src="{{character.character.corporation.logo['64x64'].href}}" ng-alt="{{character.character.corporation.name}}">
+                    </div>
+                    <div class="media-body">
+                      <p class="media-heading">Member of {{character.character.corporation.name}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             <a ng-if="character.character == null" href="{{getLoginUrl(character)}}" class="btn" role="button">
               <img src="https://images.contentful.com/idjq7aai9ylm/4fSjj56uD6CYwYyus4KmES/4f6385c91e6de56274d99496e6adebab/EVE_SSO_Login_Buttons_Large_Black.png?w=270&h=45">
             </a>
 
             <div ng-if="character.contacts != null" ng-init="filter = getFilter(character)">
-              <h3>Contacts</h3>
+              <h3>Contacts</h3>              
 
-              <div class="btn-toolbar" role="toolbar" aria-label="">
-                <div class="btn-group" role="group" aria-label="Contact type">
-                  <label ng-repeat="contactType in contactTypes" ng-model="filter.contactType[contactType.name]" class="btn btn-default" uib-btn-checkbox>{{contactType.text}}</label>
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <div class="row">
+                    <div class="col-xs-2">
+                      <label class="btn no-btn" aria-label="Actions"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span></label>
+                    </div>
+                    <div class="col-xs-10 pull-right">
+                      <div class="btn-toolbar" role="toolbar" aria-label="">
+                        <label class="btn no-btn btn-sm" aria-label="Contacts selected"><span>{{getContactSelectedInfo(character)}}</span></label>
+
+                        <div class="btn-group" role="group" aria-label="Actions">
+                          <button type="button" class="btn btn-default btn-sm" ng-click="toggleContactSelected(character)">
+                            <span ng-class="'glyphicon glyphicon-' + getContactSelectedClass(character)" aria-hidden="true"></span>
+                          </button>
+                        </div>
+                        <div class="btn-group btn-group-sm" role="group" aria-label="Actions">
+                          <!--<button type="button" class="btn btn-primary btn-sm" ng-click="todo">
+                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                          </button>-->
+                          <button type="button" class="btn btn-primary btn-sm" ng-click="copy(character)">
+                            <span ng-class="'glyphicon glyphicon-triangle-' + (character.type == 'Source' ? 'right' : 'left')" aria-hidden="true"></span>
+                          </button>
+                          <button type="button" class="btn btn-danger btn-sm" ng-click="del(character)">
+                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-xs-2">
+                      <label class="btn no-btn" aria-label="Filters"><span class="glyphicon glyphicon-filter" aria-hidden="true"></span></label>
+                    </div>
+                    <div class="col-xs-10 pull-right">
+                      <div class="btn-toolbar" role="toolbar" aria-label="">
+                        <div class="btn-group btn-group-sm" role="group" aria-label="Contact properties">
+                          <label class="btn btn-default btn-sm" ng-model="filter.flags.watched" aria-label="Watched" uib-btn-checkbox><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></label>
+                          <label class="btn btn-default btn-sm" ng-model="filter.flags.blocked" aria-label="Blocked" uib-btn-checkbox><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></label>
+                        </div>
+
+                        <div class="btn-group btn-group-sm" role="group" aria-label="Contact standings">
+                          <label ng-repeat="standing in standings" class="btn btn-default btn-sm" ng-model="filter.standing[standing]" uib-btn-checkbox>
+                            <img ng-src="{{getStandingImage(standing)}}" class="big-standing"/>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-xs-10 pull-right">
+                      <div class="input-group input-group-sm">
+                        <input type="text" class="form-control" ng-name="search_{{character.type}}" ng-model="filter.search" placeholder="Search for...">
+                        <div class="input-group-btn input-group-sm" role="group" aria-label="Contact type">
+                          <label ng-repeat="contactType in contactTypes" ng-model="filter.contactType[contactType.name]" class="btn btn-default btn-sm" uib-btn-checkbox>{{contactType.text}}</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-
-                <div class="btn-group" role="group" aria-label="Contact properties">
-                  <label class="btn btn-default" ng-model="filter.flags.watched" uib-btn-checkbox>Watched</label>
-                  <label class="btn btn-default" ng-model="filter.flags.blocked" uib-btn-checkbox>Blocked</label>
-                </div>
-
-                <div class="btn-group" role="group" aria-label="Contact standings">
-                  <label ng-repeat="standing in standings" class="btn btn-default" ng-model="filter.standing[standing]" uib-btn-checkbox>
-                    <img ng-src="{{getStandingImage(standing)}}" class="big-standing"/>
-                  </label>
-                </div>
-
-                <div class="btn-group" role="group" aria-label="Actions">
-                  <button type="button" class="btn btn-default" ng-click="toggleContactSelected(character)">
-                    <span ng-class="'glyphicon glyphicon-' + getContactSelectedClass(character)" aria-hidden="true"></span>
-                  </button>
-                  <button type="button" class="btn btn-primary" ng-click="copy(character)">
-                    <span ng-class="'glyphicon glyphicon-triangle-' + (character.type == 'Source' ? 'right' : 'left')" aria-hidden="true"></span>
-                  </button>
-                  <button type="button" class="btn btn-danger" ng-click="del(character)">
-                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                  </button>
-                </div>
-              </div>
-
-
-
-              <div ng-repeat="contact in filterContacts(character.contacts, filter)">
-                <div class="contact" ng-class="isContactSelected(character, contact) ? 'selected' : ''" ng-click="contactToggleSelected(character, contact)">
-                  <img class="contact-img" ng-src="{{getContactImage(contact)}}">
-                  <img ng-if="contactHasFlag(contact)" class="contact-flag" ng-src="{{getContactFlagImage(contact)}}">
-                  <img class="contact-standing" ng-src="{{getStandingImage(contact.standing)}}">
-                  <p class="contact-name">{{getContactDisplayName(contact)}}</p>
+                <div class="panel-body">
+                  <div ng-repeat="contact in getForPage(character, filter)">
+                    <div class="contact" ng-class="isContactSelected(character, contact) ? 'selected' : ''" ng-click="contactToggleSelected(character, contact)">
+                      <img class="contact-img" ng-src="{{getContactImage(contact)}}">
+                      <img ng-if="contactHasFlag(contact)" class="contact-flag" ng-src="{{getContactFlagImage(contact)}}">
+                      <img class="contact-standing" ng-src="{{getStandingImage(contact.standing)}}">
+                      <p class="contact-name">{{getContactDisplayName(contact)}}</p>
+                    </div>
+                  </div>
+                  <uib-pagination boundary-links="true" total-items="getTotalItemCount(character, filter)" items-per-page="getPaging(character).pageSize" max-size="5" ng-model="getPaging(character).page"
+                    class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>
                 </div>
               </div>
             </div>
@@ -182,15 +141,38 @@
           <div ng-if="detail.contact.contact != null" class="col-xs-8 col-sm-4">
             <h3>Details</h3>
 
-            <b>Contact by {{detail.character.character.name}}</b><br/>
-
-            <div class="character">
-              <img class="character-img" ng-src="{{getContactImage(detail.contact, 128)}}">
-              <img class="character-standing" ng-src="{{getStandingImage(detail.contact.standing)}}">
-              <div class="character-summary">
-                  <p class="character-name">{{getContactDisplayName(detail.contact)}}</p>
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <div class="media">
+                  <div class="media-body">
+                    <h4 class="media-heading">Contact by<br/>{{detail.character.character.name}}</h4>
+                  </div>
+                  <div class="media-right">
+                    <img class="media-object" ng-src="{{detail.character.character.portrait['64x64'].href}}" ng-alt="{{detail.character.character.name}}">
+                  </div>
+                </div>
+              </div>
+              <div class="panel-body">
+                <div class="character">
+                  <img class="character-img" ng-src="{{getContactImage(detail.contact, 128)}}">
+                  <img class="character-standing" ng-src="{{getStandingImage(detail.contact.standing)}}">
+                  <div class="character-summary">
+                      <p class="character-name">{{getContactDisplayName(detail.contact)}}</p>
+                      <div ng-if="detail.contact.contactType == 'Character'">
+                        <div class="media">
+                          <div class="media-left">
+                            <img class="media-object" ng-src="{{detail.contact.character.corporation.logo['64x64'].href}}" ng-alt="{{detail.contact.character.corporation.name}}">
+                          </div>
+                          <div class="media-body">
+                            <p class="media-heading">Member of {{detail.contact.character.corporation.name}}</p>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+                </div>
               </div>
             </div>
+            
               <div class="btn-toolbar" role="toolbar" aria-label="">
                 <div class="btn-group" role="group" aria-label="Contact properties">
                   <label class="btn btn-default" ng-model="detail.contact.watched" uib-btn-checkbox>Watched</label>
@@ -223,6 +205,13 @@
       </div>
     </form>
 
-    <script src="scripts/main.js"></script>
+
+
+
+    <script src="app/init.js"></script>
+    <script src="app/self.js"></script>
+    <script src="app/main.js"></script>
+    <script src="app/error/self.js"></script>
+    <script src="app/module.js"></script>
   </body>
 </html>

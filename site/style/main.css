@@ -1,0 +1,74 @@
+.contact {
+  position: relative;
+  min-width: 34px;
+  height: 34px;
+  padding-left: 37px;
+  padding-right: 5px;
+  margin: 1px;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+.contact:hover  {
+  background: rgba(100, 100, 100, .4);
+  cursor: pointer;
+}
+.contact.selected  {
+  background: rgba(180, 180, 180, .5);
+  cursor: pointer;
+}
+.contact .contact-img {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+}
+.contact .contact-flag {
+  position: absolute;
+  top: 3px;
+  right: 2px;
+}
+.contact .contact-standing {
+  position: absolute;
+  top: 22px;
+  right: 3px;
+}
+.contact .contact-name,
+.character .character-summary .character-name  {
+  display: block;
+  font-size: 16px;
+  line-height: 32px;
+  font-family: Arial;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space:nowrap;
+}
+
+.character  {
+  position: relative;
+  height: 128px;
+  padding-left: 133px;
+  padding-right: 5px;
+}
+.character .character-img {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+.character .character-standing {
+  position: absolute;
+  bottom: 4px;
+  left: 4px;
+  width: 18px;
+  height: 18px;
+}
+.big-standing {
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  margin: -2px -4px;
+}
+.no-btn {
+  cursor: default;
+}
