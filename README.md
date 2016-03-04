@@ -9,7 +9,7 @@
 
 
 
-## How to setup a own server that runs evecontacts?
+## How to setup an own server that runs evecontacts?
 checkout this repo
 
 inside of the repo execute the folowing commands:
