@@ -4,7 +4,7 @@
 ## Live demo/ hosted version/ howots
 
 [http://f1jo.mooo.com:3000/](http://f1jo.mooo.com:3000/)
-[![Introduction video/ tutorial](https://www.youtube.com/watch?v=bEc1xSzgrFQ)](https://www.youtube.com/watch?v=bEc1xSzgrFQ)
+[![Introduction video/ tutorial](http://img.youtube.com/vi/bEc1xSzgrFQ/0.jpg)](https://www.youtube.com/watch?v=bEc1xSzgrFQ)
 
 
 
