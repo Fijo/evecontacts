@@ -170,7 +170,6 @@ var eveapi = (function(request, crest, fs, _, base64)	{
 			    	Host: 'login.eveonline.com'
 			    }
 			}, function (error, response, data) {
-				console.log(data);
 				if(data.error_description == 'Authorization code not found') errorCallback(data);
 				else callback(data.access_token);
 			}, errorCallback);
