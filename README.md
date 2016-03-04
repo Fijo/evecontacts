@@ -1,6 +1,14 @@
 # evecontacts
 
-How to setup a own server that runs evecontacts?
+
+## Live demo/ hosted version/ howots
+
+[http://f1jo.mooo.com:3000/](http://f1jo.mooo.com:3000/)
+[![Introduction video/ tutorial](https://www.youtube.com/watch?v=bEc1xSzgrFQ)](https://www.youtube.com/watch?v=bEc1xSzgrFQ)
+
+
+
+## How to setup a own server that runs evecontacts?
 checkout this repo
 
 inside of the repo execute the folowing commands:
@@ -25,3 +33,7 @@ Once you created your application put the "Secret Key" into the .apiKey file and
 To start the server execute
 node main.js
 
+
+
+## About the project
+started a couple days after the relase of the [API Chalange Dev Blog](https://community.eveonline.com/news/dev-blogs/the-eve-online-api-challenge-1/)
