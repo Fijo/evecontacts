@@ -1,6 +1,6 @@
 # evecontacts
 
-This project no longer works due as CCP has retired their old version of the API. As alot of data was passed though multiple layers, without being mapped explicitly, it's very difficult to figure out which data was supposed to go where. That's why I stopped maintaining this project a long time ago.
+This project no longer works as CCP has retired their old version of the API. As alot of data was passed though multiple layers, without being mapped explicitly, it's very difficult to figure out which data was supposed to go where. That's why I stopped maintaining this project a long time ago.
 
 
 ## Live demo/ hosted version/ howots
